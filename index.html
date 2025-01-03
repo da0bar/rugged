@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUGGED</title>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+</head>
+
+<body>
+    <h1>RUGGED</h1>
+    <button id="connectWallet">Connect Wallet</button>
+    <br>
+    <label for="betValue">Bet Number (0-100):</label>
+    <input id="betValue" type="number" min="0" max="100">
+    <br>
+    <label for="betAmount">Bet Amount (ETH):</label>
+    <input id="betAmount" type="text" placeholder="0.01">
+    <br>
+    <button id="placeBet">Place Bet</button>
+
+    <script>
+        let provider;
+        let signer;
+        let contract;
+
+        const CONTRACT_ADDRESS = '0x55B75cBF693a554eCc315f37d5192a6d4cD6213c'
+        const CONTRACT_ABI = [{ "inputs": [], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "player", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }, { "indexed": false, "internalType": "uint8", "name": "betNumber", "type": "uint8" }], "name": "BetPlaced", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint8", "name": "winningNumber", "type": "uint8" }, { "indexed": false, "internalType": "address[]", "name": "winners", "type": "address[]" }, { "indexed": false, "internalType": "uint256", "name": "rewardPerWinner", "type": "uint256" }], "name": "RoundEnded", "type": "event" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "bets", "outputs": [{ "internalType": "address", "name": "player", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "uint8", "name": "betNumber", "type": "uint8" }, { "internalType": "bool", "name": "inGame", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "calculatePot", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint8", "name": "_winningNumber", "type": "uint8" }], "name": "endRound", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "getInGamePlayers", "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint8", "name": "_betNumber", "type": "uint8" }], "name": "placeBet", "outputs": [], "stateMutability": "payable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "winners", "outputs": [{ "internalType": "address", "name": "player", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }];
+
+        // Connect Wallet
+        document.getElementById('connectWallet').addEventListener('click', async () => {
+            if (window.ethereum) {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []); // Request wallet connection
+                signer = provider.getSigner();
+                contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+                alert("Wallet connected!");
+            } else {
+                alert("MetaMask not detected! Install MetaMask to use this CUCK.");
+            }
+        });
+
+        // Place Bet
+        document.getElementById('placeBet').addEventListener('click', async () => {
+            const betValue = document.getElementById('betValue').value;
+            const betAmount = document.getElementById('betAmount').value;
+
+            if (!signer || !contract) {
+                alert("Please connect your wallet first.");
+                return;
+            }
+
+            try {
+                const tx = await contract.placeBet(Number(betValue), {
+                    value: ethers.utils.parseEther(betAmount), // Convert ETH to Wei
+                });
+                alert(`Transaction sent! Tx hash: ${tx.hash}`);
+                await tx.wait(); // Wait for transaction confirmation
+                alert("Bet placed successfully!");
+            } catch (error) {
+                console.error("Error placing bet:", error);
+                alert("Failed to place bet. Check console for details.");
+            }
+        });
+    </script>
+</body>
+
+</html>
