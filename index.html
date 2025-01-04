@@ -32,8 +32,9 @@
         // Connect Wallet
         document.getElementById('connectWallet').addEventListener('click', async () => {
             if (window.ethereum) {
-                provider = new ethers.providers.Web3Provider(window.ethereum);
+                provider = new ethers.providers.Web3Provider(window.ethereum, "any");
                 await provider.send("eth_requestAccounts", []); // Request wallet connection
+                console.log('provider', provider)
                 signer = provider.getSigner();
                 contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
                 alert("Wallet connected!");
