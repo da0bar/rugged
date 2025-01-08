@@ -7,7 +7,7 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: url('rug_bg.jpg') no-repeat center center fixed;
+    background: url('resources/img/rug_bg.jpg') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     color: #333;
