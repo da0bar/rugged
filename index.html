@@ -21,19 +21,48 @@
         <h1>RUGGED</h1>
         <button class="connect-wallet-btn" id="connectWallet">
             <div>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />
-              </svg>              
-            </div>                       
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />
+                </svg>
+            </div>
             <span>Connect Wallet</span>
-        </button>        
-        <label for="betValue">Bet Number (0-100):</label>
-        <input id="betValue" type="number" min="0" max="100" placeholder="Enter your number" required>
-        <label for="betAmount">Bet Amount (ETH):</label>
-        <input id="betAmount" type="text" placeholder="0.01" required>
-        <button type="button" class="button place-bet-btn" id="placeBet">Place Bet</button>
-        <button type="button" class="button withdraw-btn" id="withdraw">Withdraw</button>
+        </button>
+
+        <!-- Tab navigation -->
+        <div class="tabs">
+            <button class="tab-button active" id="tabPlaceBet">Place Bet</button>
+            <button class="tab-button" id="tabWithdraw">Withdraw</button>
+            <button class="tab-button" id="tabGameRewards">Game Rewards</button>
+        </div>
+
+        <!-- Tab content -->
+        <div class="tab active" id="tabContentPlaceBet">
+            <div>
+                <p>Chad move, grab that BAG</p>
+            </div>
+            <label for="betValue">Bet Number (0-100):</label>
+                <input id="betValue" type="number" min="0" max="100" placeholder="Enter your number" required>
+                <label for="betAmount">Bet Amount (ETH):</label>
+                <input id="betAmount" type="text" placeholder="0.01" required>
+                <button type="button" class="button place-bet-btn" id="placeBet">Place Bet</button>
+       
+        </div>
+
+        <div class="tab" id="tabContentWithdraw">
+            <div>
+                <p>Boo fucking hoo, Come back soon CUCK</p>
+            </div>
+            <button type="button" class="button withdraw-btn" id="withdraw">Withdraw</button>
+        </div>
+
+        <div class="tab" id="tabContentGameRewards">
+            <div>
+                <p>You capitalist scum</p>
+            </div>
+            <button type="button" class="button claim-rewards-btn" id="claimRewards">Claim Rewards</button>
+        </div>
     </div>
+
 
     <img src="resources/img/logog.png" id="im1" class="bouncing-image" style="animation-delay: 0s;">
     <img src="resources/img/rugged.png" id="im2" class="bouncing-image" style="animation-delay: 1s;">
@@ -43,21 +72,47 @@
         const urlParams = new URLSearchParams(window.location.search);
         const betValueParam = urlParams.get('betValue');
         const betAmountParam = urlParams.get('betAmount');
-
-      
+        const withdraw = urlParams.get('withdraw');
+     
         betValueParam && (document.getElementById('betValue').value = betValueParam);
         betAmountParam && (document.getElementById('betAmount').value = betAmountParam);
         
 
+        const tabPlaceBet = document.getElementById("tabPlaceBet");
+        const tabWithdraw = document.getElementById("tabWithdraw");
+        const tabGameRewards = document.getElementById("tabGameRewards");
+
+        const tabContentPlaceBet = document.getElementById("tabContentPlaceBet");
+        const tabContentWithdraw = document.getElementById("tabContentWithdraw");
+        const tabContentGameRewards = document.getElementById("tabContentGameRewards");
+
+      
+        function switchTab(tabToActivate, contentToActivate) {
+            // Reset active states for tabs
+            document.querySelectorAll(".tab-button").forEach((tab) => tab.classList.remove("active"));
+            document.querySelectorAll(".tab").forEach((content) => content.classList.remove("active"));
+
+            // Activate selected tab and content
+            tabToActivate.classList.add("active");
+            contentToActivate.classList.add("active");
+        }
+
+        tabPlaceBet.addEventListener("click", () => switchTab(tabPlaceBet, tabContentPlaceBet));
+        tabWithdraw.addEventListener("click", () => switchTab(tabWithdraw, tabContentWithdraw));
+        tabGameRewards.addEventListener("click", () => switchTab(tabGameRewards, tabContentGameRewards));
+        withdraw && (switchTab(tabWithdraw, tabContentWithdraw));
         let provider;
         let signer;
         let contract;
         let account;
         const connectWalletButton = document.getElementById("connectWallet");
 
-        const CONTRACT_ADDRESS = '0x18d12A69A6940dD4902eCEcac5003deAfF8FcB89'
-        const CONTRACT_ABI = [{ "inputs": [], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "player", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }, { "indexed": false, "internalType": "uint8", "name": "betNumber", "type": "uint8" }], "name": "BetPlaced", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint8", "name": "winningNumber", "type": "uint8" }, { "indexed": false, "internalType": "address[]", "name": "winners", "type": "address[]" }, { "indexed": false, "internalType": "uint256", "name": "rewardPerWinner", "type": "uint256" }], "name": "RoundEnded", "type": "event" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "bets", "outputs": [{ "internalType": "address", "name": "player", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "uint8", "name": "betNumber", "type": "uint8" }, { "internalType": "bool", "name": "inGame", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "calculatePot", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint8", "name": "_winningNumber", "type": "uint8" }], "name": "endRound", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "getInGamePlayers", "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint8", "name": "_betNumber", "type": "uint8" }], "name": "placeBet", "outputs": [], "stateMutability": "payable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "winners", "outputs": [{ "internalType": "address", "name": "player", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }];
+        const CONTRACT_ADDRESS = '0x73b32248CE60096F621011e74Cd8045DA407Cb1a'
+        const GR_ADRESS = '0x511F281A5b438ADA3207CB610d1bB959fB8C667D'
+        const CONTRACT_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"player","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint8","name":"betNumber","type":"uint8"}],"name":"BetPlaced","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"winningNumber","type":"uint8"},{"indexed":false,"internalType":"address[]","name":"winners","type":"address[]"},{"indexed":false,"internalType":"uint256","name":"rewardPerWinner","type":"uint256"}],"name":"RoundEnded","type":"event"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"bets","outputs":[{"internalType":"address","name":"player","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint8","name":"betNumber","type":"uint8"},{"internalType":"bool","name":"inGame","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"calculatePot","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"_winningNumber","type":"uint8"},{"internalType":"address","name":"shareholders","type":"address"}],"name":"endRound","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getInGamePlayers","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"_betNumber","type":"uint8"}],"name":"placeBet","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"winners","outputs":[{"internalType":"address","name":"player","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_address","type":"address"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+        const GR_ABI = [{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"claimRewards","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"start","type":"uint256"},{"internalType":"uint256","name":"end","type":"uint256"}],"name":"distributeRewards","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"gameToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"rewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalPot","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"stateMutability":"payable","type":"receive"}];        
         const showNotification = (message, duration = 3000, style = "success") => {
+
             const banner = document.getElementById('notificationBanner');
 
             if (!banner) {
@@ -96,6 +151,7 @@
                     account = accounts[0]
                     signer = provider.getSigner();
                     contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+                    rewards = new ethers.Contract(GR_ADRESS, GR_ABI, signer);
                     showNotification("Wallet connected!", 3000, "success");
                     connectWalletButton.innerHTML = `
                     <div>
@@ -153,6 +209,20 @@
                 const tx = await contract.withdraw(account);
                 await tx.wait();
                 showNotification("Enjoy your money chad", 3000, "success");
+            } catch (err) {
+                console.error(err);
+                showNotification("Nothing to withdraw cuck", 3000, "error");
+            }
+        });
+        document.getElementById("claimRewards").addEventListener("click", async () => {
+            try {
+                if (!signer || !rewards) {
+                showNotification("Connect you wallet first cuck.", 3000, "error");
+                return;
+            }
+                const tx = await rewards.claimRewards();
+                await tx.wait();
+                showNotification("Come back soon", 3000, "success");
             } catch (err) {
                 console.error(err);
                 showNotification("Nothing to withdraw cuck", 3000, "error");

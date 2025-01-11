@@ -83,26 +83,69 @@ h1 {
 .connect-wallet-btn.connected {
     background: linear-gradient(90deg, #28a745, #218838); /* Green for connected */
 }
-button {
-    border: none;
-    border-radius: 5px;
+.tabs-container {
+    margin-bottom: 1rem;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
+    max-width: 400px;
+    border-bottom: 2px solid #ddd;
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 0.75rem 0;
+    display: none;
+    font-size: 1rem;
+    color: #555;
+    background-color: transparent;
+    transition: color 0.2s ease-in-out, border-bottom 0.2s ease-in-out;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-button.active {
+    color: #0e0e0e;
+    border-bottom: 3px solid #000000;
+}
+.tab.active {
+    display: block;
+}
+
+.tab-button:hover {
+    background-color: #fdc3ff;
+}
+.tab-button{
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
+}
+.tab-button, .button {
+    border: none;
+    
+    
     cursor: pointer;
     margin-top: 1rem;
     transition: background 0.3s ease;
+}
+.button {
+    border-radius: 5px;
+    font-size: 1.6rem;
+    padding: 1.5rem 3.5rem;
 }
 .place-bet-btn {
     background-color: #4CAF50; /* Green */
     color: white;
 }
 
-.withdraw-btn {
+.withdraw-btn, .claim-rewards-btn {
     background-color: #f44336; /* Red */
     color: white;
     margin-left: 10px;
 }
-button:hover {
+.button:hover {
     background: #45a049;
 }
 
