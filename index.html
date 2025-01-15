@@ -25,7 +25,7 @@
     </div>
     <div id="transactionDetails" class="hidden"></div>
     <div class="container" id="container">
-        <h1>RUGGED</h1>
+        <h1>GET RUGGED</h1>
         <button class="connect-wallet-btn" id="connectWallet">
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -66,7 +66,13 @@
             <div>
                 <p>You capitalist scum</p>
             </div>
-            <button type="button" class="button claim-rewards-btn" id="claimRewards">Claim Rewards</button>
+            <div id="tokenDisplay" class="token-display" style="">
+                <div class="token-info">
+                    <span class="token-icon">💰</span>
+                    <span class="token-amount" id="userTokens">Bag is empty</span>
+                </div>
+            </div>
+            <button type="button" class="button claim-rewards-btn" id="claimRewards" disabled>Give it to me</button>
         </div>
     </div>
 
@@ -114,10 +120,10 @@
         let account;
         const connectWalletButton = document.getElementById("connectWallet");
       
-        const CONTRACT_ADDRESS = '0x3136Bc1ec3173647aA4aC3ADf85252059C6D827b'
-        const GR_ADRESS = '0xf64CB051a0C630aFd185E84d0FAB06f44D5602f4'
-        const CONTRACT_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"player","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint8","name":"betNumber","type":"uint8"}],"name":"BetPlaced","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"message","type":"string"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Debug","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"message","type":"string"},{"indexed":false,"internalType":"address","name":"value","type":"address"}],"name":"DebugTxt","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"winningNumber","type":"uint8"},{"indexed":false,"internalType":"address[]","name":"winners","type":"address[]"},{"indexed":false,"internalType":"uint256","name":"rewardPerWinner","type":"uint256"}],"name":"RoundEnded","type":"event"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"bets","outputs":[{"internalType":"address","name":"player","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint8","name":"betNumber","type":"uint8"},{"internalType":"bool","name":"inGame","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"calculatePot","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"_winningNumber","type":"uint8"},{"internalType":"address","name":"shareholders","type":"address"}],"name":"endRound","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getInGamePlayers","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"_betNumber","type":"uint8"}],"name":"placeBet","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"winners","outputs":[{"internalType":"address","name":"player","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_address","type":"address"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}];
-        const GR_ABI = [{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"message","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"ETHReceived","type":"event"},{"inputs":[],"name":"claimRewards","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"gameToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"rewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalPot","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"stateMutability":"payable","type":"receive"}];        
+        const CONTRACT_ADDRESS = '0x7B0c24a43427d73c6629FEf507733cf1895A7FE1'
+        const GR_ADRESS = '0xc32b6ABEe56C29976590f3fef826c16E48f883A0'
+        const CONTRACT_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"player","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint8","name":"betNumber","type":"uint8"}],"name":"BetPlaced","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"winningNumber","type":"uint8"},{"components":[{"internalType":"address","name":"player","type":"address"},{"internalType":"string","name":"tg_id","type":"string"}],"indexed":false,"internalType":"struct rugged.WinnerData[]","name":"winners","type":"tuple[]"},{"indexed":false,"internalType":"uint256","name":"rewardPerWinner","type":"uint256"}],"name":"RoundEnded","type":"event"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"bets","outputs":[{"internalType":"address","name":"player","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint8","name":"betNumber","type":"uint8"},{"internalType":"string","name":"tg_id","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"calculatePot","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"_winningNumber","type":"uint8"},{"internalType":"address","name":"shareholders","type":"address"}],"name":"endRound","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"_betNumber","type":"uint8"},{"internalType":"string","name":"_tg_id","type":"string"}],"name":"placeBet","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"rewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+        const GR_ABI = [{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"message","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"ETHReceived","type":"event"},{"inputs":[],"name":"claimRewards","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"gameToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getRewardBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"rewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalPot","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"stateMutability":"payable","type":"receive"}];        
         const showNotification = (message, duration = 3000, style = "success") => {
 
             const banner = document.getElementById('notificationBanner');
@@ -169,7 +175,9 @@
                     <span>${account.slice(0, 6)}...${account.slice(-4)}</span>
                 `;
                 connectWalletButton.classList.add("connected");
-                
+                const re = await rewards.getRewardBalance(account);
+                document.getElementById("userTokens").textContent = re.toString();
+                document.getElementById("claimRewards").disabled = re <= 0;
                 } catch (error) {
                     console.error("Error connecting wallet:", error);
                     showNotification("Failed to connect wallet. Try again cuck.", 3000, "error");
