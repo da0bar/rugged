@@ -216,6 +216,7 @@
                 const tx = await contract.withdraw(account);
                 await tx.wait();
                 showNotification("Enjoy your money chad", 3000, "success");
+                showTransactionHash(tx.hash);
                 Math.random() > 0.8 && triggerMatrixEffect();
             } catch (err) {
                 console.error(err);
@@ -231,6 +232,7 @@
                 const tx = await rewards.claimRewards();
                 await tx.wait();
                 showNotification("Come back soon", 3000, "success");
+                showTransactionHash(tx.hash);
                 Math.random() > 0.8 && triggerMatrixEffect();
             } catch (err) {
               
