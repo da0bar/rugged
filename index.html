@@ -202,7 +202,6 @@
                 showTransactionHash(tx.hash);
                 Math.random() > 0.8 && triggerMatrixEffect();
             } catch (error) {
-                drawMatrixEffect()
                 console.error("Error placing bet:", error);
                 showNotification("Failed to place bet", 3000, "error");
             }
