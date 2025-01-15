@@ -7,7 +7,6 @@
     <title>RUGGED</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"
     type="application/javascript"></script>
-
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="favicon.ico">
 </head>
@@ -16,8 +15,16 @@
     <div id="notificationBanner" class="hidden">
         <p id="notificationMessage"></p>
     </div>
+    <div class="matrix">
+        <canvas id="matrixCanvas" class="matrix-canvas"></canvas>
+        <div id="textOverlay">
+            <span class="fade-text small">YOU'VE</span>
+            <span class="fade-text medium">BEEN</span>
+            <span class="fade-text large">RUGGED</span>
+        </div>
+    </div>
     <div id="transactionDetails" class="hidden"></div>
-    <div class="container">
+    <div class="container" id="container">
         <h1>RUGGED</h1>
         <button class="connect-wallet-btn" id="connectWallet">
             <div>
@@ -106,7 +113,7 @@
         let contract;
         let account;
         const connectWalletButton = document.getElementById("connectWallet");
-
+      
         const CONTRACT_ADDRESS = '0x3136Bc1ec3173647aA4aC3ADf85252059C6D827b'
         const GR_ADRESS = '0xf64CB051a0C630aFd185E84d0FAB06f44D5602f4'
         const CONTRACT_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"player","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint8","name":"betNumber","type":"uint8"}],"name":"BetPlaced","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"message","type":"string"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Debug","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"message","type":"string"},{"indexed":false,"internalType":"address","name":"value","type":"address"}],"name":"DebugTxt","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"winningNumber","type":"uint8"},{"indexed":false,"internalType":"address[]","name":"winners","type":"address[]"},{"indexed":false,"internalType":"uint256","name":"rewardPerWinner","type":"uint256"}],"name":"RoundEnded","type":"event"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"bets","outputs":[{"internalType":"address","name":"player","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint8","name":"betNumber","type":"uint8"},{"internalType":"bool","name":"inGame","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"calculatePot","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"_winningNumber","type":"uint8"},{"internalType":"address","name":"shareholders","type":"address"}],"name":"endRound","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getInGamePlayers","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"_betNumber","type":"uint8"}],"name":"placeBet","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"winners","outputs":[{"internalType":"address","name":"player","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_address","type":"address"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}];
@@ -137,7 +144,7 @@
                 return;
             }
 
-            txSection.innerHTML = `Transaction Hash: 
+            txSection.innerHTML = `Transaction Hash:
             <a href="https://sepolia.basescan.org/tx/${txHash}" target="_blank" rel="noopener noreferrer" style="color: #4caf50; text-decoration: none;">
                 ${txHash}
             </a>`;
@@ -162,7 +169,7 @@
                     <span>${account.slice(0, 6)}...${account.slice(-4)}</span>
                 `;
                 connectWalletButton.classList.add("connected");
-              
+                
                 } catch (error) {
                     console.error("Error connecting wallet:", error);
                     showNotification("Failed to connect wallet. Try again cuck.", 3000, "error");
@@ -193,8 +200,9 @@
                 await tx.wait();
                 showNotification("Bet placed successfully! Return to the bot", 5000, "success");
                 showTransactionHash(tx.hash);
-                
+                Math.random() > 0.8 && triggerMatrixEffect();
             } catch (error) {
+                drawMatrixEffect()
                 console.error("Error placing bet:", error);
                 showNotification("Failed to place bet", 3000, "error");
             }
@@ -209,6 +217,7 @@
                 const tx = await contract.withdraw(account);
                 await tx.wait();
                 showNotification("Enjoy your money chad", 3000, "success");
+                Math.random() > 0.8 && triggerMatrixEffect();
             } catch (err) {
                 console.error(err);
                 showNotification("Nothing to withdraw cuck", 3000, "error");
@@ -223,12 +232,85 @@
                 const tx = await rewards.claimRewards();
                 await tx.wait();
                 showNotification("Come back soon", 3000, "success");
+                Math.random() > 0.8 && triggerMatrixEffect();
             } catch (err) {
+              
                 console.error(err);
                 showNotification("Nothing to withdraw cuck", 3000, "error");
             }
         });
+
+        function triggerMatrixEffect() {
+            document.getElementById("container").style.display = "none";
+            document.getElementById("im1").style.display = "none";
+            document.getElementById("im2").style.display = "none";
+            document.getElementById("im3").style.display = "none";
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(1);
+
+            let animationId; // Variable to store the animation ID
+            const textOverlay = document.getElementById("textOverlay");
+            textOverlay.style.display = "block"; // Show the text overlay
+            textOverlay.style.opacity = "1"; // Ensure text fades in
+            const drawMatrixEffect = () => {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#0f0';
+                ctx.font = `${fontSize}px monospace`;
+
+                drops.forEach((y, x) => {
+                    const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+                    ctx.fillText(text, x * fontSize, y * fontSize);
+
+                    if (y * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[x] = 0;
+                    }
+                    drops[x]++;
+                });
+
+                // Store the animation ID to stop it later
+                animationId = requestAnimationFrame(drawMatrixEffect);
+            };
+
+            drawMatrixEffect();
+
+            // Stop the matrix effect and clear the canvas after 5 seconds
+            setTimeout(() => {
+                cancelAnimationFrame(animationId); // Stop the animation loop
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+                document.getElementById("container").style.display = "block";
+                document.getElementById("im1").style.display = "block";
+                document.getElementById("im2").style.display = "block";
+                document.getElementById("im3").style.display = "block";
+                showNotification("Sweating much?!", 5000, "success");
+            }, 5000);
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            const backgrounds = [
+                'resources/img/rug_bg.jpg',
+                'resources/img/rug_bg1.jpg',
+                'resources/img/rug_bg2.jpg',
+                'resources/img/rug_bg3.jpg',
+                'resources/img/rug_bg4.jpg',
+                'resources/img/rug_bg5.jpg',
+                'resources/img/rug_bg6.jpg',
+                'resources/img/rug_bg7.jpg',
+                'resources/img/rug_bg8.jpg'
+            ];
+            
+            document.body.style.backgroundImage = `url(${backgrounds[Math.floor(Math.random() * backgrounds.length)]})`;
+            });
     </script>
+
+      
+
 </body>
 
 </html>
