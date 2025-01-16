@@ -177,18 +177,23 @@
                     <span>${account.slice(0, 6)}...${account.slice(-4)}</span>
                 `;
                 connectWalletButton.classList.add("connected");
+
+                contract.on("RoundEnded", async (winningNumber, winners, tgIds, rewardPerWinner) => {
+                    console.log('winners', winners)
+                    console.log('account', account)
+                    if (winners == account) {
+                        showNotification(`You won, ginormous CHAD`, 10000, "success");
+                    } else {
+                        showNotification(`You lost. Pathetic`, 10000, "error");
+                    }
+                });
+
                 const re = await rewards.getRewardBalance(account);
                 console.log('re', re.toString());
                 document.getElementById("userTokens").textContent = re.toString();
                 document.getElementById("claimRewards").disabled = re <= 0;
 
-                contract.on("RoundEnded", async (winningNumber, winners, tgIds, rewardPerWinner) => {
-                if (winners == account) {
-                    showNotification(`You won, ginormous CHAD`, 10000, "success");
-                } else {
-                    showNotification(`You lost. Pathetic`, 10000, "error");
-                }
-            });
+              
                 } catch (error) {
                     console.error("Error connecting wallet:", error);
                     showNotification("Failed to connect wallet. Try again cuck.", 3000, "error");
