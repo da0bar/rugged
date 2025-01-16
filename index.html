@@ -184,14 +184,17 @@
                     console.log('account', account)
                     if (winners.includes(ethers.utils.getAddress(account))) {
                         showNotification(`You won, ginormous CHAD`, 10000, "success");
+                       
                     } else {
                         showNotification(`You lost. Pathetic`, 10000, "error");
                     }
+                    document.getElementById('betValue').value ="";
+                    document.getElementById('betAmount').value = "";
                 });
 
                 const re = await rewards.getRewardBalance(account);
                 console.log('re', re.toString());
-                document.getElementById("userTokens").textContent = re.toString();
+                document.getElementById("userTokens").textContent = parseFloat(ethers.utils.formatEther(re)).toFixed(6);
                 document.getElementById("claimRewards").disabled = re <= 0;
 
               
@@ -206,7 +209,7 @@
         document.getElementById('placeBet').addEventListener('click', async () => {
             const betValue = document.getElementById('betValue').value;
             const betAmount = document.getElementById('betAmount').value;
-            let p = 12345678
+           
             if (!signer || !contract) {
                 showNotification("Connect you wallet first cuck.", 3000, "error");
                 return;
