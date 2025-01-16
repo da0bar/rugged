@@ -85,10 +85,12 @@
         const urlParams = new URLSearchParams(window.location.search);
         const betValueParam = urlParams.get('betValue');
         const betAmountParam = urlParams.get('betAmount');
+        const u = urlParams.get('u') || 12345;
         const withdraw = urlParams.get('withdraw');
      
         betValueParam && (document.getElementById('betValue').value = betValueParam);
         betAmountParam && (document.getElementById('betAmount').value = betAmountParam);
+       
         
 
         const tabPlaceBet = document.getElementById("tabPlaceBet");
@@ -189,8 +191,7 @@
         document.getElementById('placeBet').addEventListener('click', async () => {
             const betValue = document.getElementById('betValue').value;
             const betAmount = document.getElementById('betAmount').value;
-
-          
+            let p = 12345678
             if (!signer || !contract) {
                 showNotification("Connect you wallet first cuck.", 3000, "error");
                 return;
@@ -201,7 +202,7 @@
             }
 
             try {
-                const tx = await contract.placeBet(Number(betValue), {
+                const tx = await contract.placeBet(Number(betValue), u, {
                     value: ethers.utils.parseEther(betAmount),
                 });
                 showNotification("Transaction sent, waiting for confirmation...", 3000, "success");
