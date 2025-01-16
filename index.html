@@ -316,6 +316,13 @@
             
             document.body.style.backgroundImage = `url(${backgrounds[Math.floor(Math.random() * backgrounds.length)]})`;
             });
+            contract.on("RoundEnded", async (winningNumber, winners, tgIds, rewardPerWinner) => {
+                if (winners.includes(account)) {
+                    showNotification(`You won, ginormous CHAD`, 10000, "success");
+                } else {
+                    showNotification(`You lost. Pathetic`, 10000, "error");
+                }
+            });
     </script>
 
       
