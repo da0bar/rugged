@@ -291,22 +291,22 @@ label {
     opacity: 0;
     transform: scale(0.5);
     animation-timing-function: ease-out;
-    animation: glow 1.5s infinite;
+
 }
 
 .fade-text.small {
     font-size: 50px;
-    animation: fade-in-scale 1.5s forwards;
+    animation: fade-in-scale 1.5s forwards, glow 1.5s infinite;
 }
 
 .fade-text.medium {
     font-size: 80px;
-    animation: fade-in-scale 1.5s 1s forwards;
+    animation: fade-in-scale 1.5s 1s forwards, glow 1.5s infinite;
 }
 
 .fade-text.large {
     font-size: 120px;
-    animation: fade-in-scale 1.5s 2s forwards;
+    animation: fade-in-scale 1.5s 2s forwards, glow 1.5s infinite;
 }
 
 /* Fade and scale animation */
