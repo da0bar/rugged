@@ -178,11 +178,12 @@
                 `;
                 connectWalletButton.classList.add("connected");
                 const re = await rewards.getRewardBalance(account);
+                console.log('re', re.toString());
                 document.getElementById("userTokens").textContent = re.toString();
                 document.getElementById("claimRewards").disabled = re <= 0;
 
                 contract.on("RoundEnded", async (winningNumber, winners, tgIds, rewardPerWinner) => {
-                if (winners.includes(account)) {
+                if (winners == account) {
                     showNotification(`You won, ginormous CHAD`, 10000, "success");
                 } else {
                     showNotification(`You lost. Pathetic`, 10000, "error");
