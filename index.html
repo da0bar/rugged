@@ -159,6 +159,7 @@
             txSection.classList.add("visible"); 
         };
         connectWalletButton.addEventListener('click', async () => {
+            if (signer) return
             if (window.ethereum) {
                 try {
                     provider = new ethers.providers.Web3Provider(window.ethereum, "any");
@@ -177,7 +178,7 @@
                     <span>${account.slice(0, 6)}...${account.slice(-4)}</span>
                 `;
                 connectWalletButton.classList.add("connected");
-
+                connectWalletButton.disabled = true;
                 contract.on("RoundEnded", async (winningNumber, winners, tgIds, rewardPerWinner) => {
                     console.log('winners', winners)
                     console.log('account', account)
