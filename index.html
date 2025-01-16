@@ -181,7 +181,7 @@
                 contract.on("RoundEnded", async (winningNumber, winners, tgIds, rewardPerWinner) => {
                     console.log('winners', winners)
                     console.log('account', account)
-                    if (winners.include(ethers.utils.getAddress(account))) {
+                    if (winners.includes(ethers.utils.getAddress(account))) {
                         showNotification(`You won, ginormous CHAD`, 10000, "success");
                     } else {
                         showNotification(`You lost. Pathetic`, 10000, "error");

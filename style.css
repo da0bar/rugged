@@ -148,6 +148,11 @@ h1 {
 .button:hover {
     background: #45a049;
 }
+.withdraw-btn:disabled, .claim-rewards-btn:disabled {
+    background-color: #cccccc; /* Light gray */
+    color: #666666; /* Darker gray */
+    cursor: not-allowed;
+}
 
 input[type="number"],
 input[type="text"] {
