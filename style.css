@@ -148,10 +148,11 @@ h1 {
 .button:hover {
     background: #45a049;
 }
-.withdraw-btn:disabled, .claim-rewards-btn:disabled {
+.button:disabled, .button.disabled {
     background-color: #cccccc; /* Light gray */
     color: #666666; /* Darker gray */
-    cursor: not-allowed;
+    cursor: not-allowed; /* Changes cursor to a disabled icon */
+    pointer-events: none; /* Disables hover effects */
 }
 
 input[type="number"],
