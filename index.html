@@ -180,6 +180,14 @@
                 const re = await rewards.getRewardBalance(account);
                 document.getElementById("userTokens").textContent = re.toString();
                 document.getElementById("claimRewards").disabled = re <= 0;
+
+                contract.on("RoundEnded", async (winningNumber, winners, tgIds, rewardPerWinner) => {
+                if (winners.includes(account)) {
+                    showNotification(`You won, ginormous CHAD`, 10000, "success");
+                } else {
+                    showNotification(`You lost. Pathetic`, 10000, "error");
+                }
+            });
                 } catch (error) {
                     console.error("Error connecting wallet:", error);
                     showNotification("Failed to connect wallet. Try again cuck.", 3000, "error");
@@ -316,13 +324,7 @@
             
             document.body.style.backgroundImage = `url(${backgrounds[Math.floor(Math.random() * backgrounds.length)]})`;
             });
-            contract.on("RoundEnded", async (winningNumber, winners, tgIds, rewardPerWinner) => {
-                if (winners.includes(account)) {
-                    showNotification(`You won, ginormous CHAD`, 10000, "success");
-                } else {
-                    showNotification(`You lost. Pathetic`, 10000, "error");
-                }
-            });
+
     </script>
 
       
