@@ -180,7 +180,9 @@
                     </div>
                     <span>${account.slice(0, 6)}...${account.slice(-4)}</span>
                 `;
-                const activePlayersCount = document.getElementById("activePlayersCount").innerHTML=contract.activePlayers();
+
+                const activePlayersCount = await contract.activePlayers();
+                document.getElementById("activePlayersCount").innerHTML=activePlayersCount
 
                 connectWalletButton.classList.add("connected");
                 connectWalletButton.disabled = true;

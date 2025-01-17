@@ -311,15 +311,15 @@ label {
 .active-players-bar {
     position: absolute;
     top: 0;
-    width: 100%;
-    background-color: #111;
-    color: #0f0;
+    width: 20%;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
     text-align: center;
     padding: 10px 0;
     font-size: 18px;
     font-weight: bold;
-    z-index: 10;
-    border-bottom: 2px solid #333;
+    z-index: 0;
+    border-bottom: 1px solid #d205cf;
 }
 
 .active-players-bar p {
