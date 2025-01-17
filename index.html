@@ -15,6 +15,9 @@
     <div id="notificationBanner" class="hidden">
         <p id="notificationMessage"></p>
     </div>
+    <div class="active-players-bar">
+        <p>Active Players: <span id="activePlayersCount">0</span></p>
+    </div>
     <div class="matrix">
         <canvas id="matrixCanvas" class="matrix-canvas"></canvas>
         <div id="textOverlay">
@@ -177,6 +180,8 @@
                     </div>
                     <span>${account.slice(0, 6)}...${account.slice(-4)}</span>
                 `;
+                const activePlayersCount = document.getElementById("activePlayersCount").innerHTML=contract.activePlayers();
+
                 connectWalletButton.classList.add("connected");
                 connectWalletButton.disabled = true;
                 contract.on("RoundEnded", async (winningNumber, winners, tgIds, rewardPerWinner) => {
