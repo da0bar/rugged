@@ -282,10 +282,10 @@
             const columns = canvas.width / fontSize;
             const drops = Array(Math.floor(columns)).fill(1);
 
-            let animationId; // Variable to store the animation ID
+            let animationId; 
             const textOverlay = document.getElementById("textOverlay");
-            textOverlay.style.display = "block"; // Show the text overlay
-            textOverlay.style.opacity = "1"; // Ensure text fades in
+            textOverlay.style.display = "block";
+            textOverlay.style.opacity = "1"; 
             const drawMatrixEffect = () => {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -303,13 +303,13 @@
                     drops[x]++;
                 });
 
-                // Store the animation ID to stop it later
+             
                 animationId = requestAnimationFrame(drawMatrixEffect);
             };
 
             drawMatrixEffect();
 
-            // Stop the matrix effect and clear the canvas after 5 seconds
+        
             setTimeout(() => {
                 cancelAnimationFrame(animationId); // Stop the animation loop
                 ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
@@ -317,6 +317,8 @@
                 document.getElementById("im1").style.display = "block";
                 document.getElementById("im2").style.display = "block";
                 document.getElementById("im3").style.display = "block";
+                textOverlay.style.display = "none";
+                textOverlay.style.opacity = "0"; 
                 showNotification("Sweating much?!", 5000, "success");
             }, 5000);
         }
