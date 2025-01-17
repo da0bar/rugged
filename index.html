@@ -15,6 +15,7 @@
     <div id="notificationBanner" class="hidden">
         <p id="notificationMessage"></p>
     </div>
+    <div id="notificationContainer"></div>
     <div class="active-players-bar">
         <p>Active Players: <span id="activePlayersCount">0</span></p>
     </div>
@@ -192,10 +193,10 @@
                     console.log('winners', winners)
                     console.log('account', account)
                     if (winners.includes(ethers.utils.getAddress(account))) {
-                        showNotification(`You won, ginormous CHAD`, 10000, "success");
+                        showStack(`You won, ginormous CHAD`, "success");
                        
                     } else {
-                        showNotification(`You lost. Pathetic`, 10000, "error");
+                        showStack(`You lost. Pathetic`, "error");
                     }
                     document.getElementById('betValue').value = "";
                     document.getElementById('betAmount').value = "";
@@ -236,7 +237,7 @@
                 await tx.wait();
                 showNotification("Bet placed successfully! Return to the bot", 5000, "success");
                 showTransactionHash(tx.hash);
-                Math.random() > 0.8 && triggerMatrixEffect();
+                Math.random() > 0.8 && triggerRugged();
             } catch (error) {
                 console.error("Error placing bet:", error);
                 showNotification("Failed to place bet", 3000, "error");
@@ -253,7 +254,7 @@
                 await tx.wait();
                 showNotification("Enjoy your money chad", 3000, "success");
                 showTransactionHash(tx.hash);
-                Math.random() > 0.8 && triggerMatrixEffect();
+                Math.random() > 0.8 && triggerRugged();
             } catch (err) {
                 console.error(err);
                 showNotification("Nothing to withdraw cuck", 3000, "error");
@@ -269,7 +270,7 @@
                 await tx.wait();
                 showNotification("Come back soon", 3000, "success");
                 showTransactionHash(tx.hash);
-                Math.random() > 0.8 && triggerMatrixEffect();
+                Math.random() > 0.8 && triggerRugged();
             } catch (err) {
               
                 console.error(err);
@@ -277,47 +278,13 @@
             }
         });
 
-        function triggerMatrixEffect() {
+        function triggerRugged() {
             document.getElementById("container").style.display = "none";
             document.getElementById("im1").style.display = "none";
             document.getElementById("im2").style.display = "none";
             document.getElementById("im3").style.display = "none";
-            const canvas = document.getElementById('matrixCanvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const fontSize = 16;
-            const columns = canvas.width / fontSize;
-            const drops = Array(Math.floor(columns)).fill(1);
-
-            let animationId; 
-            const textOverlay = document.getElementById("textOverlay");
-            textOverlay.style.display = "block";
-            textOverlay.style.opacity = "1"; 
-            const drawMatrixEffect = () => {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ctx.fillStyle = '#0f0';
-                ctx.font = `${fontSize}px monospace`;
-
-                drops.forEach((y, x) => {
-                    const text = String.fromCharCode(0x30A0 + Math.random() * 96);
-                    ctx.fillText(text, x * fontSize, y * fontSize);
-
-                    if (y * fontSize > canvas.height && Math.random() > 0.975) {
-                        drops[x] = 0;
-                    }
-                    drops[x]++;
-                });
-
-             
-                animationId = requestAnimationFrame(drawMatrixEffect);
-            };
-
-            drawMatrixEffect();
-
+           
+             document.body.style.backgroundImage = `url(resources/img/47d5d52b84ca2117c336ab3de3978b3a.gif) repeat center center fixed`;
         
             setTimeout(() => {
                 cancelAnimationFrame(animationId); // Stop the animation loop
@@ -345,6 +312,33 @@
             
             document.body.style.backgroundImage = `url(${backgrounds[Math.floor(Math.random() * backgrounds.length)]})`;
             });
+
+            const notificationContainer = document.getElementById("notificationContainer");
+
+
+        function showStack(message, type) {
+            const notificationCard = document.createElement("div");
+            notificationCard.className = `notification-card ${type}`;
+            notificationCard.innerHTML = `
+                <span>${message}</span>
+                <button class="close-btn">&times;</button>
+            `;
+
+            const closeButton = notificationCard.querySelector(".close-btn");
+            closeButton.addEventListener("click", () => {
+                closeNotification(notificationCard);
+            });
+
+            notificationContainer.appendChild(notificationCard);
+
+        }
+
+        function closeNotification(notificationCard) {
+            notificationCard.style.animation = "fadeOut 0.3s ease-in-out";
+            notificationCard.addEventListener("animationend", () => {
+                notificationCard.remove();
+            });
+        }
 
     </script>
 
