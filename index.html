@@ -50,7 +50,7 @@
             <div>
                 <p>Chad move, grab that BAG</p>
             </div>
-            <label for="betValue">Bet Number (0-100):</label>
+            <label for="betValue">Bet Number (1-100):</label>
                 <input id="betValue" type="number" min="0" max="100" placeholder="Enter your number" required>
                 <label for="betAmount">Bet Amount (ETH):</label>
                 <input id="betAmount" type="text" placeholder="0.01" required>
@@ -183,7 +183,8 @@
 
                 const activePlayersCount = await contract.activePlayers();
                 document.getElementById("activePlayersCount").innerHTML=activePlayersCount
-
+                console.log('activePlayersCount', activePlayersCount)
+           
                 connectWalletButton.classList.add("connected");
                 connectWalletButton.disabled = true;
                 contract.on("RoundEnded", async (winningNumber, winners, tgIds, rewardPerWinner) => {
