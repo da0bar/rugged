@@ -284,11 +284,12 @@
             document.getElementById("im2").style.display = "none";
             document.getElementById("im3").style.display = "none";
            
-             document.body.style.backgroundImage = `url(resources/img/47d5d52b84ca2117c336ab3de3978b3a.gif) repeat center center fixed`;
-        
+            document.body.style.backgroundImage = "url('resources/img/47d5d52b84ca2117c336ab3de3978b3a.gif')";
+            document.body.style.backgroundRepeat = "repeat";
+            document.body.style.backgroundPosition = "center center";
+            document.body.style.backgroundAttachment = "fixed";
+                    
             setTimeout(() => {
-                cancelAnimationFrame(animationId); // Stop the animation loop
-                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
                 document.getElementById("container").style.display = "block";
                 document.getElementById("im1").style.display = "block";
                 document.getElementById("im2").style.display = "block";
