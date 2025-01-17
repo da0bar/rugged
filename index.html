@@ -182,8 +182,9 @@
                 `;
 
                 const activePlayersCount = await contract.activePlayers();
-                document.getElementById("activePlayersCount").innerHTML=activePlayersCount
-                console.log('activePlayersCount', ethers.BigNumber.from(activePlayersCount))
+                document.getElementById("activePlayersCount").innerHTML=activePlayersCount.toString()
+                console.log('activePlayersCount', activePlayersCount.toString())
+                console.log('activePlayersCount', activePlayersCount.toNumber())
            
                 connectWalletButton.classList.add("connected");
                 connectWalletButton.disabled = true;
