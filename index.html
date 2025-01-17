@@ -279,11 +279,14 @@
         });
 
         function triggerRugged() {
+            const textOverlay = document.getElementById("textOverlay");
             document.getElementById("container").style.display = "none";
             document.getElementById("im1").style.display = "none";
             document.getElementById("im2").style.display = "none";
             document.getElementById("im3").style.display = "none";
-           
+          
+            textOverlay.style.display = "block";
+            textOverlay.style.opacity = "1"; 
             document.body.style.backgroundImage = "url('resources/img/47d5d52b84ca2117c336ab3de3978b3a.gif')";
             document.body.style.backgroundRepeat = "repeat";
             document.body.style.backgroundSize = "auto";
@@ -294,6 +297,7 @@
                 document.getElementById("im1").style.display = "block";
                 document.getElementById("im2").style.display = "block";
                 document.getElementById("im3").style.display = "block";
+
                 textOverlay.style.display = "none";
                 textOverlay.style.opacity = "0"; 
                 document.body.style.backgroundImage = "url('resources/img/rug_bg.jpg')";
