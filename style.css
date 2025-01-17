@@ -421,6 +421,11 @@ label {
     transform: scale(1.2);
     color: #ff5c5c;
 }
+.notification-card.success {
+    background-color: #4caf50; /* Green */
+}
+
+/* Error Notification */
 
 /* Fade-in animation */
 @keyframes fadeIn {

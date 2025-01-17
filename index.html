@@ -70,7 +70,7 @@
             <div>
                 <p>You capitalist scum</p>
             </div>
-            <div id="tokenDisplay" class="token-display" style="">
+            <div id="tokenDisplay" class="token-display">
                 <div class="token-info">
                     <span class="token-icon">💰</span>
                     <span class="token-amount" id="userTokens">Bag is empty</span>
@@ -193,10 +193,10 @@
                     console.log('winners', winners)
                     console.log('account', account)
                     if (winners.includes(ethers.utils.getAddress(account))) {
-                        showStack(`You won, ginormous CHAD`, "success");
+                        showStack(`🫦 You won, ginormous CHAD`, "success");
                        
                     } else {
-                        showStack(`You lost. Pathetic`, "error");
+                        showStack(`🤡 You lost. Pathetic`, "error");
                     }
                     document.getElementById('betValue').value = "";
                     document.getElementById('betAmount').value = "";
