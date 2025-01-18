@@ -250,7 +250,7 @@
                 showNotification("Connect you wallet first cuck.", 3000, "error");
                 return;
             }
-                const tx = await contract.withdraw(account);
+                const tx = await contract.withdraw();
                 await tx.wait();
                 showNotification("Enjoy your money chad", 3000, "success");
                 showTransactionHash(tx.hash);
