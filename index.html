@@ -15,6 +15,8 @@
     <div id="notificationBanner" class="hidden">
         <p id="notificationMessage"></p>
     </div>
+    <div id="carousel-container" class="carousel-container"></div>
+   
     <div id="notificationContainer"></div>
     <div class="active-players-bar">
         <p>Active Players: <span id="activePlayersCount">0</span></p>
@@ -309,13 +311,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             const backgrounds = [
                 'resources/img/rug_bg.jpg',
-                'resources/img/rug_bg1.jpg',
-                'resources/img/rug_bg2.jpg',
                 'resources/img/rug_bg3.jpg',
-                'resources/img/rug_bg4.jpg',
-                'resources/img/rug_bg5.jpg',
-                'resources/img/rug_bg6.jpg',
-                'resources/img/rug_bg7.jpg',
             ];
             
             document.body.style.backgroundImage = `url(${backgrounds[Math.floor(Math.random() * backgrounds.length)]})`;
@@ -349,6 +345,7 @@
         }
 
     </script>
+    <script src="resources/effect/carousel.js"></script>
 
       
 
